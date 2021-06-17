@@ -1,0 +1,219 @@
+.main {
+    position: relative;
+    background-color: #f4f5f8;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 48px);
+
+  }
+  
+  .main .div-left-30{
+    position: absolute;
+    right: 10px;
+    height: calc(100% - 10px);
+    width: 30px;
+    background-color: #f4f5f8;
+    z-index: 100;
+  }  
+
+  .main-title {
+    padding: 24px 50px 24px 0; 
+    position: absolute;
+    top: 0;
+    height: 100px;
+    z-index: 1;
+    align-items: center;
+    width: calc(100% - 10px);
+  }
+  
+  .main-title-content {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .main .title {
+    font-size: 24px;
+    font-weight: 700;
+    display: inline;
+    font-family: 'notosans-bold';
+  }
+  
+  .main-title-btn{
+    display: inline-flex;
+    float: right;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .main-title-btn button span {
+    margin-right: 10px;
+    font-family: 'notosans-bold';
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .main-title-btn .btn-more{
+    width: 103px;
+    height: 36px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    border: 1px solid #8d9096;
+    font-weight: 600;
+  }
+  
+  .main-title-btn .btn-more:hover{
+    background-color: #d2d3d6;
+    cursor: pointer;
+  }
+  
+  .main-title-btn .btn-more:active{
+    background-color: #bbbcbc;
+  }
+  
+  .main-title-btn .btn-add{
+    background-color: #2ca01c;
+    margin-left: 12px;
+    height: 36px;
+    width: 72px;
+    border-radius: 30px 0px 0px 30px;
+    border: 1px solid #8d9096;
+    color: #ffffff;
+  }
+  
+  .main-title-btn .btn-add:hover{
+    background-color: #35bf22;
+    cursor: pointer;
+  }
+  
+  .main-title-btn .btn-excel{
+    width: 46px;
+    height: 36px;
+    border: 1px solid #8d9096;
+    border-radius: 0px 30px 30px 0px;
+    background-color: #2ca01c;
+  }
+  
+  .main-title-btn .btn-excel:hover{
+    background-color: #35bf22;
+    cursor: pointer;
+  }
+
+  .layout{
+    padding: 100px 30px 0 0;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+  }
+  
+  .control{
+    width: 100%;
+    height: 72px;
+    padding: 17px 16px 17px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+  }
+  
+  .excution{
+    width: 183px;
+    height: 36px;
+    border: 1px solid #8d9096;
+    line-height: 13px;
+    font-weight: 600;
+    opacity: 0.5;
+    border-radius: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .excution span{
+    margin-right: 10px;
+
+  }
+  
+  .right-control{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .search-name-id{
+    display: inline-flex;
+    position: relative;
+  }
+  
+  .search-name-id input{
+    width: 240px;
+    height: 36px;
+    outline: none;
+    border: 1px solid #babec5;
+    padding: 6px 10px;
+  }
+  
+  .search-name-id img{
+    position: absolute;
+    right: 4px;
+    top: 4px;
+  }
+  
+  .three-btn{
+    display: inline-flex;
+    height: 24px;
+  }
+  
+  .three-btn img{
+    width: 24px;
+    height: 24px;
+    margin-left: 12px;
+    cursor: pointer;
+  }
+  
+  .three-btn img:hover{
+    transform: scale(1.2);  
+  }
+
+  .grid{
+    background: #fff;
+    padding: 16px 16px 20px;
+    position: relative;
+    z-index: 2;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    position: sticky !important;
+  }
+
+  .div-flex{
+    display: flex!important;
+  }
+
+  .tool-tip{
+    width: 120px;
+    height: 62px;
+    position: absolute;
+    top: 0px;
+    border: 1px solid #babec5;
+    z-index: 100;
+    right: 0px;
+  }
+  
+  .tool-tip .option{
+    height: 30px;
+    padding: 5px 10px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .tool-tip .option:hover{
+    background-color: #e8e9ec;
+    color: #08bf1e;
+  }

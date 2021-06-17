@@ -1,0 +1,101 @@
+.amis-header {
+    height: 48px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .three-stripes {
+    height: 24px;
+    width: 24px;
+    background: url("../assets/three-stripes.svg");
+    background-repeat: no-repeat;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  
+  .tooltip-content {
+    display: inline;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'notosans-semibold';
+
+  }
+  
+  .img-expand_more {
+    width: 26px;
+    height: 20px;
+    padding-top: 5px;
+    padding-left: 7px;
+    cursor: pointer;
+  }
+  
+  .amis-header .div-space {
+    flex-grow: 1;
+  }
+  
+  .div-search {
+    display: flex;
+    position: relative;
+    margin-right: 20px;
+  }
+  
+  .div-search input {
+    width: 200px;
+    height: 32px;
+    border: 1px solid #babec5;
+    padding: 6px 10px;
+    outline: none;
+  }
+  
+  .div-search img {
+    position: absolute;
+    right: 5px;
+    top: 3px;
+  }
+  
+  .header-menu-icon {
+    width: 48px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+  .header-menu-icon:hover {
+    background-color: #2ca01c;
+    cursor: pointer;
+  }
+  
+  .header-menu-img{
+    width: 48px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .header-menu-img img{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+
+  .header-menu-img img:hover{
+    transform: scale(1.1);
+  }
+  
+  .div-username{
+      width: 230px;
+      padding-right: 30px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'notosans-semibold';
+      font-weight: 600;
+      font-size: 14px;
+      font-family: 'notosans-semibold';
+      
+  }

@@ -1,0 +1,352 @@
+.wrap-table {
+  min-width: 100%;
+}
+
+/* css table */
+.ms-table {
+  overflow: unset;
+  max-height: none;
+  min-width: calc(100% + 30px);
+}
+
+.ms-table table{
+  max-width: 100%;
+  border-spacing: 0;
+}
+
+.ms-table th{
+  position: sticky;
+  top: -100px ;
+  z-index: 5;
+  max-width: 100%;
+  background-color: #eceef1;
+  padding: 5px 10px 3px 10px;
+  font-weight: 700;
+  font-size: 12px;
+  max-height: 34px; 
+}
+
+.ms-table thead{
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.ms-table tr {
+  border: 1px dotted black;
+}
+
+.ms-table tr:hover td{
+  background-color: #eceef1;
+  cursor: pointer;
+}
+
+.ms-table tbody tr,td{
+  z-index: 2 ;
+  position: relative;
+}
+
+.ms-table th,td {
+  font-size: 13px;
+  border-bottom: 1px dotted #c7c7c7;
+  border-right: 1px dotted #c7c7c7;
+}
+
+.ms-table td{
+  height: 47px;
+  padding: 5px 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+.ms-table input {
+  width: 18px;
+  height: 18px;
+}
+
+ .ms-table .border-left{
+  border: 0;
+  border-left: 1px dotted #c7c7c7;
+  border-bottom: 1px dotted #c7c7c7;
+} 
+
+.ms-table .col-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  left: 16px;
+  border: 0px;
+  border-bottom: 1px dotted #c7c7c7;
+  border-right: 1px dotted #c7c7c7;
+  z-index: 5 !important;
+}
+
+.ms-table .col-edit{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ms-table .col-edit span{
+  margin-right: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(0, 117, 192);
+}
+
+.ms-table .col-edit .div-more-icon{
+  padding: 0px 5px;
+  height: 16px;
+  border: 1px solid transparent;
+}
+
+.ms-table .col-edit .div-more-icon:hover{
+  border: 1px solid rgb(0, 117, 192);
+}
+
+/* css scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f4f5f8; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #b8bcc3; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(109, 109, 109); 
+}
+
+/* css footer */
+.wrap-table .wrap-footer {
+  position: sticky;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  bottom: 0;
+  min-height: 46px;
+  width: 2256px;
+  z-index: 10;
+  background-color: #fff;
+}
+
+.wrap-table .wrap-footer select, option{
+  width: 200px;
+  height: 32px;
+  border: 1px solid #8d9096;
+  -webkit-appearance: button;
+  outline: none;
+}
+
+.wrap-table .wrap-footer .front, .behind, .page-number{
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.wrap-table .wrap-footer .page-number {  
+  width: 21px;
+  height: 21px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrap-table .selected {
+  background-color: #d7dadd !important;
+}
+
+.wrap-table .selectedPage {
+  border: 1px solid #e0e0e0;
+}
+
+.wrap-table .controlpage:hover{
+  transform: scale(1.1);
+}
+
+/* css con */
+.check-all{
+  z-index: 7!important;
+  position: sticky;
+  left: 16;
+  top: 0;
+  min-width: 40px;
+  width: 40px;
+  max-width: 40px;
+}
+
+.out-right{
+  min-width: 30px;
+  position: sticky;
+  border: none !important;
+  width: 30px;
+  max-width: 30px;
+  z-index: 25;
+  padding: 0;
+}
+
+.footer-content{
+  width: 100% !important;
+  justify-content: space-between!important;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+}
+
+.count-record{
+  position: sticky;
+  left: 20px;
+  white-space: nowrap;
+  min-width: 10px;
+  display: flex;
+}
+
+.right-footer{
+  position: sticky;
+  right: 60px;
+  /* min-width: max-content; */
+  display: flex;
+  min-height: 100%;
+  align-items: center;
+}
+
+.right-footer *{
+  display: inline;
+}
+
+.center{
+  justify-content: center;
+  display: flex;
+}
+
+.bgc-white{
+  background-color: #fff !important;
+}
+
+.sticky{
+  position: sticky !important;
+}
+
+.out-left-white{
+  padding: 0px !important;
+  margin: 0px !important;
+  position: sticky;
+  left: 0;
+  border: 0 !important;
+  z-index: 25!important;
+  max-width: 16px;
+  min-width: 16px;
+  width: 16px;
+}
+
+.div-select-count{
+  height: 100%;
+}
+
+.div-select-count .v-text-field.v-text-field--solo .v-input__control {
+  min-height: 32px !important;
+  padding: 0;
+}
+
+.div-select-count .v-list-item {
+  min-height: 32px !important;
+  padding: 0 14px 0 10px !important;
+  font-size: 13px !important;
+}
+
+.div-select-count .v-list-item__title {
+  font-size: 13px !important;
+}
+
+.div-select-count .v-input{
+  overflow: hidden;
+}
+
+.div-select-count .v-input__icon {
+  height: 32px !important;
+  min-width: 20px !important;
+  width: 20px !important;
+}
+
+.div-select-count #input-9{
+  max-width: 10px !important; 
+}
+
+.div-select-count .v-select__selection {
+  max-width: 100% !important;
+}
+
+
+
+ .wrap-paging .theme--light.v-pagination .v-pagination__item--active{
+  color: #000000 !important;
+  border: 1px solid #babec5 !important;
+}
+
+.wrap-paging{
+  height: 21px;
+  width: auto;
+}
+
+.wrap-paging ul.v-pagination.theme--light{
+  max-height: 100%;
+}
+
+.wrap-paging .v-pagination > li{
+  border: none!important;
+}
+
+.wrap-paging button{
+  height: 22px;
+  padding: 0 !important;
+  min-width: fit-content;
+  outline: none !important;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.wrap-paging .v-pagination__item{
+  min-width: 22px !important;
+  height: 22px !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.wrap-paging .v-pagination__more {
+  margin: 0 !important;
+  height: 22px !important;
+  width: 22px !important;
+} 
+
+.wrap-paging .v-pagination__navigation{
+  width: 21px !important;
+  height: 21px !important;
+  box-shadow: none!important;
+  margin: 0 !important;
+} 
+
+.wrap-paging .v-icon.v-icon{
+  font-size: 14px !important;
+  color: #000 !important;
+  
+}
+.wrap-paging .mdi-chevron-left::before{
+  content: "Trước";
+  font-family: "notosans-regular" !important;
+}
+.wrap-paging .mdi-chevron-right::before {
+  content: "Sau";
+  font-family: "notosans-regular" !important;
+}
