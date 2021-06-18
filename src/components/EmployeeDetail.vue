@@ -4,6 +4,7 @@
     v-if="showFormDetail"
     @keyup.shift.tab.exact="shiftTab()"
     @keyup.esc="cancelFormDetail"
+    @keyup.ctrl.exact="ctrlPress()"
     @click="clickForm($event)"
   >
     <div class="form-detail" id="form-detail">
@@ -360,6 +361,7 @@ export default {
       showIdentityDate: false, // ẩn hiên date-picker của ngày cấp
 
       identityDate_PK: null, // ngày sinh để v-model với date picker
+
     };
   },
 
@@ -419,6 +421,30 @@ export default {
               }
             });
             return;
+          case "email":
+            this.$nextTick(function () {
+              if (this.$refs.email != undefined) {
+                this.$refs.email.focus();
+                this.$refs.email.select();
+              }
+            });
+            return;
+          case "phoneNumber":
+            this.$nextTick(function () {
+              if (this.$refs.phoneNumber != undefined) {
+                this.$refs.phoneNumber.focus();
+                this.$refs.phoneNumber.select();
+              }
+            });
+            return;
+          case "telephoneNumber":
+            this.$nextTick(function () {
+              if (this.$refs.telephoneNumber != undefined) {
+                this.$refs.telephoneNumber.focus();
+                this.$refs.telephoneNumber.select();
+              }
+            });
+            return;
         }
       }
     },
@@ -429,6 +455,7 @@ export default {
       this.showIdentityDate = false;
       this.showDateOfBirth = false;
       this.resetForm();
+      this.increaseCode();
     },
 
     //hàm reset form
@@ -487,27 +514,20 @@ export default {
       let me = this;
       let employee = { ...me.employee };
       // chuyển date hiển thị thành date server
-      if(employee.dateOfBirth.length>0){
-        employee.dateOfBirth = me.dateOfBirth_PK;
-      }else{
+      if(employee.dateOfBirth == null || employee.dateOfBirth == undefined || employee.dateOfBirth ==""){
         employee.dateOfBirth = null;
+      }else{
+        employee.dateOfBirth = me.dateOfBirth_PK;
       }
 
-      if(employee.identityDate>0){
-        employee.identityDate = me.identityDate_PK;
-      }else{
+      if(employee.identityDate == null || employee.identityDate == undefined || employee.identityDate ==""){
         employee.identityDate = null;
+      }else{
+        employee.identityDate = me.identityDate_PK;
       }
       let employeeCode = employee.employeeCode.toUpperCase();
       // chèn thêm số 0 vào trước số mã nhân viên nếu mã chưa đủ 7 kí tự
-      let lengthCode = employeeCode.length;
-      if (lengthCode < 7) {
-        let count = 7 - lengthCode;
-        for (let i = 0; i < count; i++) {
-          employeeCode =
-            employeeCode.substring(0, 2) + "0" + employeeCode.substr(2);
-        }
-      }
+      employeeCode = employeeCode.substring(0, 2) + employeeCode.substr(2).padStart(5, "0");
       employee.employeeCode = employeeCode;
       return employee;
     },
@@ -522,7 +542,7 @@ export default {
       if (me.formMode == "add") {
         axios
           .post("http://localhost:8080/api/v1/Employees", employee)
-          .then((response) => {
+          .then(async (response) => {
             console.log(response);
             // reset form và load lại dữ liệu
             EventBus.$emit("loadDataServer");
@@ -530,7 +550,8 @@ export default {
             if (e == "save") me.cancelFormDetail();
             else {
               me.resetForm();
-              me.increaseCode();
+              await me.increaseCode();
+              me.focusAndSelectAll();
             }
           })
           .catch((error) => {
@@ -548,14 +569,15 @@ export default {
         // let url = "https//localhost:8080/api/v1/Employees";
         axios
           .put("http://localhost:8080/api/v1/Employees", employee)
-          .then((response) => {
+          .then(async (response) => {
             // reset form và load lại dữ liệu
             console.log(response);
             // nếu là ấn save thì ẩn form
             if (e == "save") me.cancelFormDetail();
             else {
               me.resetForm();
-              me.increaseCode();
+              await me.increaseCode();
+              me.focusAndSelectAll();
             }
             EventBus.$emit("loadDataServer");
           })
@@ -638,26 +660,26 @@ export default {
     validateObject() {
       let me = this;
       // validate mã nhân viên
-      var code_regex = /^NV/i;
-      var obligatory = "NV";
-      let employeeCode = me.employee.employeeCode;
+      var code_regex = /^NV-/i;
+      var obligatory = "NV-";
+      let employeeCode = me.employee.employeeCode.trim();
       let strLength = employeeCode.length;
       var numberCode_regex = /^-?\d+$/;
       me.fieldMissingData = "employeeCode";
-      if (strLength < 2) {
+      if (strLength < 4) {
         me.messageContent = "Mã nhân viên quá ngắn, vui lòng nhập lại";
         return false;
-      } else if (strLength > 7) {
+      } else if (strLength > 8) {
         me.messageContent = "Mã nhân viên quá dài, vui lòng nhập lại";
         return false;
       } else if (!code_regex.test(employeeCode)) {
         me.messageContent = "Mã nhân viên phải chứa kí tự " + obligatory;
         return false;
       } else {
-        let numberInCode = employeeCode.substr(2, strLength - 2);
+        let numberInCode = employeeCode.substr(3);
         if (!numberCode_regex.test(numberInCode)) {
           me.messageContent =
-            "Mã nhân viên không đúng định dạng, vui lòng nhập lại.";
+            "Mã nhân viên không đúng định dạng (NV-xxxxx), vui lòng nhập lại.";
           return false;
         }
       }
@@ -677,17 +699,27 @@ export default {
         return false;
       }
 
+      // validate email
+      if(!me.validateEmail(me.employee.email)){
+        me.fieldMissingData = "email";
+        me.messageContent = "Email không hợp lệ, vui lòng nhập lại.";
+        return false;
+      } 
+
       return true;
+    },
+
+    validateEmail(email){
+      if(email == "" || email == null) return true;
+      var reg_email = /^[a-zA-Z]{2}[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        return reg_email.test(email);
     },
 
     validateDate(date) {
       if (date == "" || date == null) return true;
       var date_regex =
         /^(0[1-9]|1\d|2\d|3[01]|[0-9])\/(0[1-9]|1[0-2]|[0-9])\/(19|20)\d{2}$/;
-      if (!date_regex.test(date)) {
-        return false;
-      }
-      return true;
+      return date_regex.test(date);
     },
 
     formatDate(e) {
@@ -777,23 +809,27 @@ export default {
       await axios
         .get(url)
         .then((res) => {
-         maxCode = res.data.substr(2);
+         maxCode = res.data.substr(3);
          maxCode = parseInt(maxCode) + 1;
+         maxCode= maxCode.toString().padStart(5, "0");
          if(maxCode < 100000)
-          me.employee.employeeCode = res.data.substr(0,2) + maxCode;
+          me.employee.employeeCode = res.data.substr(0,3) + maxCode;
         })
         .catch((err) => {
           console.log(err);
-          
         });
     }
   },
 
+  created () {
+    this.increaseCode();
+  },
+
   mounted() {
+    let me = this;
     // bắt sự kiện nhấn phím sửa thông tin nhân viên
     EventBus.$on("editEmployee", (employee) => {
       if (employee != null) {
-        let me = this;
         me.employee = { ...employee };
         me.formMode = "edit";
         me.showForm();
@@ -801,20 +837,23 @@ export default {
     });
 
     // bắt sự kiên thêm mới nhân viên
-    EventBus.$on("addEmployee", async () => {
-      let me = this;
+    EventBus.$on("addEmployee", async (employee) => {
+      if(employee != undefined){
+        let newCode = me.employee.employeeCode;
+        me.employee = {...employee};
+        me.employee.employeeCode = newCode;
+      }
       me.formMode = "add";
-      await me.increaseCode();
       me.showForm();
     });
 
     // bắt sự kiện xóa nhân viên
     EventBus.$on("deleteEmployee", (employee) => {
-      this.deleteEmployee(employee);
+      me.deleteEmployee(employee);
     });
 
     EventBus.$on("focusAndSelectAll", (field) => {
-      this.focusAndSelectAll(field);
+      me.focusAndSelectAll(field);
     });
   },
 

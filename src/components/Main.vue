@@ -5,11 +5,11 @@
         <div class="title">Nhân viên</div>
         <div class="main-title-btn">
           <button class="btn-more">
-            <span>Tiện ích</span><img src="../assets/drop_down.svg" alt="" />
+            <span>Tiện ích</span><img src="../Resource/img/drop_down.svg" alt="" />
           </button>
-          <button v-on:click="addEmployee" class="btn-add">Thêm</button>
+          <button v-on:click="addEmployee()" class="btn-add">Thêm</button>
           <button class="btn-excel">
-            <img src="../assets/drop_down.svg" alt="" />
+            <img src="../Resource/img/drop_down.svg" alt="" />
           </button>
         </div>
       </div>
@@ -18,29 +18,32 @@
         <div class="grid">
           <div class="excution">
             <span>Thực hiện hàng loạt</span>
-            <img src="../assets/drop_down.svg" alt="" />
+            <img src="../Resource/img/drop_down.svg" alt="" />
           </div>
         <div class="right-control">
           <div class="search-name-id">
             <input
               id="search-name-id"
               v-model="keySearch"
+              ref="input"
               type="text"
+              v-on:keyup.enter="searchKeyWord()"
               placeholder="Tìm theo mã, tên nhân viên"
               autocomplete="off"
             />
             <img src="../Resource/img/find.svg" alt="search" />
           </div>
           <div class="three-btn">
-            <img v-on:click="refresh" src="../Resource/img/refresh.svg" alt="" />
+            <img v-on:click="refresh()" src="../Resource/img/refresh.svg" alt="" />
             <img src="../Resource/img/excel.svg" alt="" />
             <img src="../Resource/img/setting.svg" alt="" />
           </div>
         </div>
       </div>
-      <div class="div-flex" id="ms-component-table">
+      <div class="" id="ms-component-table">
         <TableEmployee 
-          v-on:showMoreOption="showMoreOption"/>
+          v-on:showMoreOption="showMoreOption"
+          :keySearch="keySearch"/>
       </div>
     </div>
     <div class="div-left-30"></div>
@@ -48,23 +51,20 @@
         <div class="option" @click="cloneEmployee()">Nhân bản</div>
         <div class="option" @click="showWarning()">Xóa</div>
     </div>
+    
   </div>
 </template>
 
 <script>
 import TableEmployee from "./TableEmployee.vue";
 import EventBus from "./../main.js";
-import $ from "jquery";
 export default {
-
   data(){
     return{
       showOption: false, // ẩn hiện option xóa, nhân bản
-      // indexE: null, // chỉ định taho tác với nhân viên nào
       xClick: 0,
       yClick: 0,
       employee: null,
-
       keySearch:"",
     }
   },
@@ -80,9 +80,11 @@ export default {
     },
 
     // sự kiện ấn refresh
-    async refresh() {
-      await EventBus.$emit("loadDataServer");
-      $("#search-name-id").val("");
+    refresh() {
+      this.keySearch = "";
+      let mode = "refresh";
+      EventBus.$emit("loadDataServer", mode);
+      
     },
 
     arrowUp() {
@@ -113,17 +115,28 @@ export default {
           this.showOption = false;
         }
       }
-    }
-  },
+    },
 
-  mounted() {
-    // lắng nghe sự kiện người dùng ấn enter trên input tìm kiếm
-    $("#search-name-id").on("keyup", function (e) {
-      if (e.key === "Enter" || e.keyCode === 13) {
-        let s = this.value;
-        EventBus.$emit("searchByNameId", s);
-      }
-    });
+    // chuyển đổi ngày tháng năm từ server thành dd/mm/yyyy để hiển thị
+    convertDate(dateSrc) {
+      if(dateSrc == null) return;
+      let date = new Date(dateSrc),
+        year = date.getFullYear().toString(),
+        month = (date.getMonth() + 1).toString().padStart(2, "0"),
+        day = date.getDate().toString().padStart(2, "0");
+      return `${day}/${month}/${year}`;
+    },
+
+    searchKeyWord(){
+      EventBus.$emit("loadDataServer");
+    },
+
+    cloneEmployee(){
+      let employee = {...this.employee};
+      employee.dateOfBirth = this.convertDate(employee.dateOfBirth);
+      employee.identityDate = this.convertDate(employee.identityDate);
+      EventBus.$emit("addEmployee", employee);
+    }
   },
 };
 </script>

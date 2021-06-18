@@ -13,21 +13,21 @@
         <div class="item-icon">
           <img class="icon" src="../Resource/img/sumary.svg" alt="" />
         </div>
-        <div class="item-title">Tổng quan</div>
+        <router-link to="/about"><div class="item-title">Tổng quan</div></router-link>
       </div>
 
       <div class="item">
         <div class="item-icon">
           <img class="icon" src="../Resource/img/cash.svg" alt="" />
         </div>
-        <div class="item-title">Tiền mặt</div>
+        <router-link to="/home"><div class="item-title">Tiền mặt</div></router-link>
       </div>
 
       <div class="item">
         <div class="item-icon">
           <img class="icon" src="../Resource/img/keepmoney.svg" alt="" />
         </div>
-        <div class="item-title">Tiền gửi</div>
+        <router-link to="/keepmoney"><div class="item-title">Tiền gửi</div></router-link>
       </div>
 
       <div class="item">

@@ -7,21 +7,18 @@
                 @blur="handleBlur($event)"
                 v-on:input="search()" ref="departmentName"
                 name="departmentName"
+                autocomplete="off"
                 required>
             <div class="combo-select-show" v-on:click = "toggleSelect()">
-                <i class="material-icons">
-                    arrow_drop_down
-                </i>
+                <img src="../Resource/img/expland-more-small.svg" alt="">
             </div>
         </div>
-        <div class="selected-list-combo-box" :class="{'selection-show':isshow,}" id = 'combo-box-data' :style="widthLength">
+        <div class="selected-list-combo-box" :class="{'selection-show':isShow,}" id = 'combo-box-data' :style="widthLength">
             <div  v-for="(item, index) in dataShow" :key="item.value" class="combo-selection" 
             v-on:click = "select(item)" :class="{'item-selected': selectValue.text == item.text, 'row-current':index == rowMarked}">
                 <div class="ticker-icon">
                 <div class="icon-wrap" :class="{'selection-show': item.text == selectValue.text}">
-                    <i class="material-icons" style="font-size:20px">
-                        done
-                    </i>
+                    <img src="../Resource/img/done.svg" alt="">
                 </div>
                 </div>
                 <div class="select-text">
@@ -42,8 +39,8 @@ export default {
     },
     data(){
         return{
-            // isshow = true:  hiển thị selecbox, isshow = false: đóng 
-            isshow:false,
+            // isShow = true:  hiển thị selecbox, isShow = false: đóng 
+            isShow:false,
             // giá trị đang được lựa chọn của selecbox
             selectValue: {},
             // giá trị của selectbox có hợp lệ hay không
@@ -120,7 +117,9 @@ export default {
         },
         toggleSelect(){
             this.dataShow = this.cacheData;
-            this.isshow=!this.isshow;
+            this.isShow=!this.isShow;
+            if(this.$el.getElementsByClassName("row-current")[0] != undefined)
+                this.$el.getElementsByClassName("row-current")[0].classList.remove("row-current");
             this.$refs.departmentName.focus();
         },
         // hàm xử lý khi nhấn enter
@@ -158,7 +157,7 @@ export default {
         },
         // ẩn form đi
         hideform(){
-            this.isshow = false;
+            this.isShow = false;
         },
         // lựa chọn 1 giá trị
         select(value){
@@ -202,7 +201,7 @@ export default {
             let value = this.selectValue.text.toLowerCase();
             this.dataShow = [];
             if(value != undefined){
-                this.isshow = true;
+                this.isShow = true;
                 // tìm kiếm các giá trị match với giá trị cần tìm
                 for (let index = 0; index < this.cacheData.length; index++) {
                     // chuyển các text sang tiếng việt không dấu
@@ -259,17 +258,11 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
     *{
         padding: 0;
         margin: 0;
     }
-    /* .combo-box-wraper{
-        max-height: 100px;
-        min-height: 40px;
-        min-width: 100px;
-        max-width: 300px;
-    } */
+    
     .combo-box-wrap{
         margin-top: 5px;
         display: flex;
@@ -282,7 +275,7 @@ export default {
         display: block !important;  
     }
     .no-data{
-        border: 1px solid red;
+        border: 1px solid #FF0000;
     }
     .combo-box-wrap input[type="text"]{
         margin-top: 0px;
@@ -308,13 +301,13 @@ export default {
 
     .selected-list-combo-box{
         text-align: left;
-        border: 1px solid rgb(104, 102, 102);
+        border: 1px solid #babec5;
         display: none;
         border-top:none;
         z-index: 10000;
         position: absolute;
         box-sizing: border-box;
-        background-color: white;
+        background-color: #fff;
     }
     .selected-list-combo-box .combo-selection{
         padding: 5px;
@@ -330,7 +323,7 @@ export default {
         background-color: #ebedf0;
     }
     .row-current{
-        background: rgb(112, 184, 202) !important ;
+        background: #ebedf0 !important ;
     }
     .active{
         border: 1px solid #2ca01c !important;

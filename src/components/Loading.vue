@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="loading" class="wrap-message-form">
-            <img src="../Resource/loading.svg" alt="loading">
+            <img style="" src="../Resource/loading.svg" alt="">
         </div>
         <div v-if="warning" class="wrap-message-form">
             <div class="message-box">
@@ -13,7 +13,6 @@
                         <div>Bạn có chắc muốn xóa nhân viên "{{employee.employeeName}}"
                             , mã nhân viên là "{{employee.employeeCode}}" không?</div>
                     </div>
-                    
                 </div>
                 <div class="space"></div>
                 <div class="mess-footer">
@@ -41,18 +40,16 @@
         </div>
     </div>
 </template>
-
 <script>
 import EventBus from './../main.js';
 export default {
     data() {
         return {
-            loading: false, // ẩn hiện loading
             warning: false,  // ẩn hiện form cảnh báo
             messageContent: null, // nội dung thông báo cho người dùng
             error: false, // ẩn hiện box báo lỗi
             field: null, // trường cần focus sau khi tắt message-box
-
+            loading: true,
             // nhân viên hiển thị trên form warning
             employee : {
               employeeCode : null,

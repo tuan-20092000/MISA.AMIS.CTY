@@ -36,9 +36,14 @@
     width: 178px;
     height: 42px;
     border-left: 6px solid transparent; 
-    color: white;
+    color: #fff !important;
     display: flex;
     padding-left: 8px;
+  }
+
+  .item a{
+    color: #fff !important;
+    text-decoration: none !important;
   }
   
   .item:hover{

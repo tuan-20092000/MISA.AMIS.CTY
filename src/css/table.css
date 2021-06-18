@@ -2,7 +2,6 @@
   min-width: 100%;
 }
 
-/* css table */
 .ms-table {
   overflow: unset;
   max-height: none;
@@ -92,7 +91,7 @@
 .ms-table .col-edit span{
   margin-right: 7px;
   font-size: 13px;
-  font-weight: 600;
+  font-family: 'notosans-semibold';
   color: rgb(0, 117, 192);
 }
 
@@ -106,29 +105,23 @@
   border: 1px solid rgb(0, 117, 192);
 }
 
-/* css scrollbar */
-/* width */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f4f5f8; 
 }
  
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #b8bcc3; 
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(109, 109, 109); 
 }
 
-/* css footer */
 .wrap-table .wrap-footer {
   position: sticky;
   display: flex;
@@ -136,7 +129,7 @@
   justify-content: space-between;
   bottom: 0;
   min-height: 46px;
-  width: 2256px;
+  width: 2233px;
   z-index: 10;
   background-color: #fff;
 }
@@ -174,7 +167,6 @@
   transform: scale(1.1);
 }
 
-/* css con */
 .check-all{
   z-index: 7!important;
   position: sticky;
@@ -214,7 +206,6 @@
 .right-footer{
   position: sticky;
   right: 60px;
-  /* min-width: max-content; */
   display: flex;
   min-height: 100%;
   align-items: center;
@@ -286,8 +277,6 @@
   max-width: 100% !important;
 }
 
-
-
  .wrap-paging .theme--light.v-pagination .v-pagination__item--active{
   color: #000000 !important;
   border: 1px solid #babec5 !important;
@@ -307,21 +296,21 @@
 }
 
 .wrap-paging button{
-  height: 22px;
+  height: 20px;
   padding: 0 !important;
   min-width: fit-content;
   outline: none !important;
   display: flex;
-  text-align: center;
+  align-items: center;
   justify-content: center;
 }
 
 .wrap-paging .v-pagination__item{
   min-width: 22px !important;
-  height: 22px !important;
   margin: 0 !important;
   border: none !important;
   box-shadow: none !important;
+  font-size: 13px !important;
 }
 
 .wrap-paging .v-pagination__more {
@@ -345,8 +334,18 @@
 .wrap-paging .mdi-chevron-left::before{
   content: "Trước";
   font-family: "notosans-regular" !important;
+  font-size: 13px;
 }
 .wrap-paging .mdi-chevron-right::before {
   content: "Sau";
   font-family: "notosans-regular" !important;
+  font-size: 13px;
+}
+
+.wrap-paging ul li:first-child{
+  margin-right: 13px;
+}
+
+.wrap-paging ul li:last-child{
+  margin-left: 13px;
 }

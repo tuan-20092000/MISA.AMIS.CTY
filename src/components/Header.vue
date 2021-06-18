@@ -4,7 +4,6 @@
     <div class="tooltip">
       <div class="tooltip-content">CÔNG TY CỔ PHẦN MISA</div>
       <img
-        v-on:click="showHideFormMode"
         class="img-expand_more"
         src="../Resource/img/expland-more-big.svg"
         alt="img-expand_more"
@@ -44,7 +43,7 @@
       <div>
         <img
           class="img-expand_more"
-          src="../assets/expand_more.svg"
+          src="../Resource/img/expand_more.svg"
           alt="img-expand_more"
         />
       </div>
@@ -58,12 +57,6 @@ export default {
   name: "Header",
   data() {
     return {};
-  },
-
-  methods: {
-    showHideFormMode() {
-      this.$emit("showHideFormMode");
-    },
   },
 };
 </script>

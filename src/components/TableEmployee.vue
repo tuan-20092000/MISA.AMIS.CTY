@@ -57,7 +57,7 @@
             <td v-bind:class="{ selected: index == selectedRow }">
               {{ convertGender(employee.gender) }}
             </td>
-            <td v-bind:class="{ selected: index == selectedRow }" >
+            <td v-bind:class="{ selected: index == selectedRow }">
               <div class="center">{{ convertDate(employee.dateOfBirth) }}</div>
             </td>
             <td v-bind:class="{ selected: index == selectedRow }">
@@ -89,9 +89,12 @@
               <div class="col-edit">
                 <span v-on:click="edit(index)">Sửa</span>
                 <div class="div-more-icon">
-                  <img src="../Resource/img/more.svg" alt="" @click="showMoreOption($event,index)">
+                  <img
+                    src="../Resource/img/more.svg"
+                    alt=""
+                    @click="showMoreOption($event, index)"
+                  />
                 </div>
-                <!-- <span v-on:click="showWarning(index)">Xóa</span> -->
               </div>
             </td>
             <td style="right: 0px" class="out-right bgc-white"></td>
@@ -102,47 +105,39 @@
     <div class="wrap-footer">
       <div class="footer-content">
         <div class="count-record">
-          Tổng số: {{ countEmployee }} bản ghi
+          <span
+            >Tổng số: <b>{{ countEmployee }}</b> bản ghi</span
+          >
         </div>
         <div class="right-footer">
           <div class="div-select-count">
             <div style="position: sticky; left: 60%; right: 40%">
-          <div 
-            style="
-              max-width: 215px;
-              max-height: 32px;
-              display: flex;
-              top: -17px;
-              border: 1px solid #babec5;
-            "
-            data-app
-          >
-            <v-select
-              :items="optionCountPerPage"
-              v-model="countEmployeePerPage"
-              @change="changeCountPerPage"
-              solo
-            ></v-select>
-          </div>
-        </div>
+              <div
+                style="
+                  max-width: 215px;
+                  max-height: 32px;
+                  display: flex;
+                  top: -17px;
+                  border: 1px solid #babec5;
+                  margin: 0 16px;
+                "
+                data-app
+              >
+                <v-select
+                  :items="optionCountPerPage"
+                  v-model="countEmployeePerPage"
+                  @change="changeCountPerPage"
+                  solo
+                ></v-select>
+              </div>
+            </div>
           </div>
           <div class="wrap-paging">
-            <!-- <div v-on:click="prevPage" class="front controlpage">Trước</div>
-            <div
-              v-for="page in countPage"
-              :key="page"
-              v-on:click="getDataPage(page)"
-              :class="{ selectedPage: selectedPage == page }"
-              class="page-number"
-            >
-              {{ page }}
-            </div>
-            <div v-on:click="nextPage" class="behind controlpage">Sau</div> -->
             <v-container class="max-width">
               <v-pagination
                 v-model="selectedPage"
                 :length="countPage"
-                @input="getDataPage(selectedPage)"
+                @input="getDataPage()"
                 :total-visible="7"
               ></v-pagination>
             </v-container>
@@ -150,18 +145,21 @@
         </div>
       </div>
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>
 const axios = require("axios");
 import EventBus from "../main.js";
 export default {
+  props: {
+    keySearch: String,
+  },
+
   data() {
     return {
       employeeList: {}, // những nhân viên hiển thị lên màn hình
-      countEmployee: 0, // tất cả nhân viên trong csdl
+      countEmployee: 0, // số nhân viên lấy/tìm kiếm được
       selectedRow: 0, // hàng đang chọn
       countEmployeePerPage: 10, // số lượng bản ghi / trang
       countPage: 1, // số trang
@@ -179,24 +177,31 @@ export default {
   },
 
   methods: {
-    async getTotalRecord(){
+    async getTotalRecord(mode) {
       let me = this;
       EventBus.$emit("onLoading");
-      console.log("total");
-      let url = "http://localhost:8080/api/v1/Employees/GetTotal"; 
+      let keySearch = this._props.keySearch.trim();
+      if(mode == "refresh") keySearch="";
       await axios
-        .get(url)
+        .request({
+          method: "post",
+          url: "http://localhost:8080/api/v1/Employees/GetTotalRecord",
+          data: '"' + keySearch + '"',
+          headers: { "Content-Type": "application/json" },
+        })
         .then((res) => {
-          me.countEmployee = res.data;
-          me.countPage = Math.round(me.countEmployee / me.countEmployeePerPage);
-          EventBus.$emit("stopLoading");
-          me.getDataServe();
+          if (res.data != "") me.countEmployee = res.data;
+          else me.countEmployee = 0;
+          me.selectedPage = 1;
+          me.selectedRow = 0;
+          me.getDataServer(mode);
         })
         .catch((err) => {
           console.log(err);
           EventBus.$emit("stopLoading");
-            let message = "Lấy dữ liệu thất bại, vui lòng liên hệ Misa để được trợ giúp."
-            EventBus.$emit("showError", message);
+          let message =
+            "Lấy dữ liệu thất bại, vui lòng liên hệ Misa để được trợ giúp.";
+          EventBus.$emit("showError", message);
         });
     },
 
@@ -226,46 +231,21 @@ export default {
     },
 
     // hàm lấy dữ liệu từ server cho trang thứ page
-    async getDataPage(page) {
+    getDataPage() {
       this.selectedRow = 0;
-      this.selectedPage = page;
-      let startIndex = (page - 1) * this.countEmployeePerPage;
-      this.employeeList = this.countEmployee.slice(
-        startIndex,
-        startIndex + this.countEmployeePerPage
-      );
+      this.getDataServer();
     },
 
     // thay đổi số lượng nhân viên hiển thị trên 1 trang
     changeCountPerPage() {
-      this.employeeList = this.countEmployee.slice(
-        0,
-        this.countEmployeePerPage
-      );
-      this.countPage =
-        Math.floor(this.countEmployee.length / this.countEmployeePerPage) + 1;
+      this.selectedRow = 0;
       this.selectedPage = 1;
-    },
-
-    // hàm previous page
-    prevPage() {
-      if (this.selectedPage > 1) {
-        this.selectedPage = this.selectedPage - 1;
-        this.getDataPage(this.selectedPage);
-      }
-    },
-
-    // hàm next page
-    nextPage() {
-      if (this.selectedPage < this.countPage) {
-        this.selectedPage = this.selectedPage + 1;
-        this.getDataPage(this.selectedPage);
-      }
+      this.getDataServer();
     },
 
     // chuyển đổi ngày tháng năm từ server thành dd/mm/yyyy để hiển thị
     convertDate(dateSrc) {
-      if(dateSrc == null) return;
+      if (dateSrc == null) return;
       let date = new Date(dateSrc),
         year = date.getFullYear().toString(),
         month = (date.getMonth() + 1).toString().padStart(2, "0"),
@@ -274,32 +254,41 @@ export default {
     },
 
     // hàm lấy dữ liệu từ server
-    async getDataServe() {
+    async getDataServer(mode) {
       EventBus.$emit("onLoading");
-      let url = "http://localhost:8080/api/v1/Employees/GetPage?page=" 
-      + this.selectedPage +"&countPerPage=" +this.countEmployeePerPage;
+      let me = this;
+      let keySearch = this._props.keySearch.trim();
+      if(mode == "refresh") keySearch="";
       await axios
-        .get(url)
+        .request({
+          method: "post",
+          url:
+            "http://localhost:8080/api/v1/Employees/GetPage?page=" +
+            me.selectedPage +
+            "&count=" +
+            me.countEmployeePerPage,
+          data: '"' + keySearch + '"',
+          headers: { "Content-Type": "application/json" },
+        })
         .then((res) => {
-          console.log(res);
-          this.employeeList = res.data;
+          me.employeeList = res.data;
+          me.countPage = Math.ceil(me.countEmployee / me.countEmployeePerPage);
           EventBus.$emit("stopLoading");
         })
         .catch((err) => {
           console.log(err);
           EventBus.$emit("stopLoading");
-            let message = "Lấy dữ liệu thất bại, vui lòng liên hệ Misa để được trợ giúp."
-            EventBus.$emit("showError", message);
+          let message =
+            "Lấy dữ liệu thất bại, vui lòng liên hệ Misa để được trợ giúp.";
+          EventBus.$emit("showError", message);
         });
     },
-    
 
-    showMoreOption(e, index){
+    showMoreOption(e, index) {
       let clientX = e.clientX,
-          clientY = e.clientY,
-          employee = this.employeeList[index];
+        clientY = e.clientY,
+        employee = this.employeeList[index];
       this.$emit("showMoreOption", clientX, clientY, employee);
-     
     },
 
     arrowUp() {
@@ -309,39 +298,18 @@ export default {
   },
 
   created() {
-   
+    this.getTotalRecord();
   },
 
   mounted() {
-    this.getTotalRecord();
-    // this.getDataServe();
-
     //hàm lắng nghe sự kiện khi các component khác gọi loadData
-    EventBus.$on("loadDataServer", () => {
-      this.getDataServe();
+    EventBus.$on("loadDataServer", (mode) => {
+      this.getTotalRecord(mode);
     });
-
-    //hàm lắng nghe sự kiện khi người dùng ấn enter ở ô tìm kiếm
-    EventBus.$on("searchByNameId", async (s) => {
-      EventBus.$emit("onLoading");
-      let url = "http://localhost:8080/api/v1/Employees/search?s=" + s;
-      await axios.get(url).then((res) => {
-        this.countEmployee = res.data;
-        this.countPage =
-          Math.floor(this.countEmployee.length / this.countEmployeePerPage) + 1;
-        this.employeeList = this.countEmployee.slice(
-          0,
-          this.countEmployeePerPage
-        );
-        this.selectedPage = 1;
-      });
-
-      EventBus.$emit("stopLoading");
-    }),
 
     EventBus.$on("arrowUp", () => {
       if (this.selectedRow > 0) this.selectedRow--;
-    }),
+    });
 
     EventBus.$on("arrowDown", () => {
       this.selectedRow++;
